@@ -4,6 +4,7 @@ public enum EnvironmentVars {
     DB_USERNAME,
     DB_PASSWORD,
     DB_CONNECTION_STRING,
+    pg_database,
 
     GIT_USERNAME,
     GIT_PASSWORD,

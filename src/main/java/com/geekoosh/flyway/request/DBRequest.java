@@ -43,10 +43,19 @@ public class DBRequest {
         }
         SystemEnvironment systemEnvironment = new SystemEnvironment();
         String dbSecret = systemEnvironment.getEnv(SecretVars.DB_SECRET);
+
         if(dbSecret != null) {
             JSONObject json = ValueManager.latestSecretJson(dbSecret);
             base.setUsername(json.get("username").toString());
             base.setPassword(json.get("password").toString());
+            String host = json.get("host").toString();
+            Integer port = Integer.parseInt(json.get("port").toString());
+
+            String jdbc = "jdbc:postgresql://%s:%s/%s?useSSL=true";
+            String database = systemEnvironment.getEnv(EnvironmentVars.pg_database);
+            String jdbcFinal = String.format(jdbc, host, port, database);
+    
+            base.setConnectionString(jdbcFinal);
         } else {
             base.setUsername(ValueManager.value(
                     base.getUsername(), EnvironmentVars.DB_USERNAME
@@ -54,10 +63,11 @@ public class DBRequest {
             base.setPassword(ValueManager.value(
                     base.getPassword(), EnvironmentVars.DB_PASSWORD
             ));
-        }
-        base.setConnectionString(ValueManager.value(
+            base.setConnectionString(ValueManager.value(
                 base.getConnectionString(), EnvironmentVars.DB_CONNECTION_STRING
-        ));
+            ));
+        }
+
         return base;
     }
 }

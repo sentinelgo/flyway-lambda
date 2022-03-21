@@ -1,5 +1,5 @@
 group 'com.geekoosh'
-version '0.0.4'
+version '0.0.5'
 
 apply plugin: 'java'
 
@@ -30,7 +30,7 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    archiveFileName = "flyway-all.jar"
+    archiveFileName = "flyway-serverless.jar"
     transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
 }
 
