@@ -2,6 +2,7 @@ package com.geekoosh.flyway;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.geekoosh.aurora.AuroraDatabaseService;
 import com.geekoosh.flyway.request.*;
 import com.geekoosh.flyway.response.Response;
 import com.geekoosh.lambda.MigrationFilesException;
@@ -25,11 +26,13 @@ public class FlywayHandler implements RequestHandler<Request, Response> {
 
         try {
 
+            AuroraDatabaseService aurora = new AuroraDatabaseService();
+            aurora.Initialize();
+
             GitRequest gitRequest = GitRequest.build(input.getGitRequest());
             S3Request s3Request = S3Request.build(input.getS3Request());
             DBRequest dbRequest = DBRequest.build(input.getDbRequest());
             FlywayRequest flywayRequest = FlywayRequest.build(input.getFlywayRequest());
-
 
             GitService gitService = gitService(gitRequest);
 
